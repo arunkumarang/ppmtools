@@ -1,0 +1,21 @@
+ppmtools, Copyright 2018-20 by Arun
+
+Run "ppmtools -h" command for option details.
+
+Usage: ./ppmtools option [args]
+            -d infile1 infile2 difffile                : Generates difference ppm file
+            -s infile outfile bitdepth(8-16)           : Generates higher pixel PPM image based on bitdepth
+            -z infile outfile zoomfactor(0.1-8.0x)     : Generates scaled/zoomed image
+            -c infile outfile cnvopt(0:YUV, 1:RGB)     : Generates YUV (or RGB) images from RGB (or YUV)
+            -b infile outfile cnvopt(0:ppm to bayer, 1:bayer to ppm) : Generates Bayer from PPM image
+
+
+Change log:
+   1.00       04-Nov-2018             Initial release.
+   
+
+LICENSE:
+  I've made the license be GPLv2, but this is a quick hack and 
+if you have some reason to want to use this where another license would be
+preferable, email me and we can discuss the issue.  I will probably accommodate
+other alternatives in the very unlikely case that somebody actually cares. 
