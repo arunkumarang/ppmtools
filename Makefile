@@ -1,30 +1,30 @@
 # Makefile (this file is inspired by "http://www.jwz.org/dadadodo/" source)
 
-SHELL		        = /bin/sh
+SHELL           = /bin/sh
 CC              = gcc -Wall -Wstrict-prototypes -Wnested-externs -Wno-format
-CFLAGS		      = -g -std=c99
-LDFLAGS		      =  
-DEFS		        = -DGETTIMEOFDAY_TWO_ARGS -DHAVE_UNISTD_H
-LIBS		        = -lm
+CFLAGS          = -g -std=c99
+LDFLAGS         =  
+DEFS            = -DGETTIMEOFDAY_TWO_ARGS -DHAVE_UNISTD_H
+LIBS            = -lm
                 
-DEPEND		      = makedepend
+DEPEND          = makedepend
 DEPEND_FLAGS    = 
 DEPEND_DEFINES  = 
 
-srcdir		      = .
-INCLUDES	      = -I$(srcdir)
-                
-SRCS		        = ppmtools.c ppm.c pgm.c
-OBJS		        = ppmtools.o ppm.o pgm.o
-EXE		          = ppmtools
-                
-HDRS		        = ppm.h pgm.h version.h
-MEN		          = 
-EXTRAS		      = Makefile README
-                
-TARFILES	      = $(EXTRAS) $(SRCS) $(HDRS) $(MEN)
-TAR		          = tar
-COMPRESS	      = gzip --verbose --best
+srcdir          = .
+INCLUDES        = -I$(srcdir)
+
+SRCS            = ppmtools.c ppm.c pgm.c
+OBJS            = ppmtools.o ppm.o pgm.o
+EXE             = ppmtools
+
+HDRS            = ppm.h pgm.h version.h
+MEN             = 
+EXTRAS          = makefile README
+
+TARFILES        = $(EXTRAS) $(SRCS) $(HDRS) $(MEN)
+TAR             = tar
+COMPRESS        = gzip --verbose --best
 COMPRESS_EXT    = gz
 
 all: $(EXE)
