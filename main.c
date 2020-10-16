@@ -28,10 +28,9 @@
 #define CYCbCr2G(Y, Cb, Cr) CLIP( Y - (( 22544 * Cb + 46793 * Cr ) >> 16) + 135)
 #define CYCbCr2B(Y, Cb, Cr) CLIP( Y + (116129 * Cb >> 16 ) - 226 )
 
-
 void usage(const char *av0)
 {
-    fprintf (stdout, "\n usage: %s [options]", av0);
+    fprintf (stdout, "\n usage: %s option [args] ", av0);
     fprintf (stdout, "\n   -d ref_file1 ref_file2 diff_file \
                       \n   -s in_file out_file bit_depth(8 - 16)\
                       \n   -z in_file out_file scale_factor(0.1x - 8.0x)\

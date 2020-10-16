@@ -1,4 +1,4 @@
-ppmtools, Copyright 2018-20 by Arun
+Ppmtools is copyright 2018-2020 Arun.
 
 Run "ppmtools -h" command for option details.
 
@@ -11,7 +11,8 @@ Usage: ./ppmtools option [args]
 
 
 Change log:
-   1.00       04-Nov-2018             Initial release.
+   0.10       04-Nov-2018             Initial release.
+   0.11       16-Oct-2020             Fix coding sytle.
    
 
 LICENSE:
