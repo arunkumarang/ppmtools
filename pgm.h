@@ -11,26 +11,20 @@ extern "C" {
 typedef unsigned char  u_char;
 typedef unsigned short u_short;
 
-typedef struct ImagePGM
+typedef struct pgm
 {
     int width;
     int height;
     int maxval;
     u_short *ch;
-} ImagePGM;
+} pgm_t;
 
-ImagePGM *ImagePGMCreate(int width, int height, int maxval);
-void   ImagePGMRelease(ImagePGM *image);
-ImagePGM *ImagePGMRead(char *filename);
-void   ImagePGMWrite(ImagePGM *image, char *filename);
+pgm_t* alloc_pgm_buffer(int width, int height, int maxval);
+void   free_pgm_buffer(pgm_t *image);
+void   clear_pgm_image(pgm_t *image, u_short grey);
 
-int    ImagePGMWidth(ImagePGM *image);
-int    ImagePGMHeight(ImagePGM *image);
-
-void   ImagePGMClear(ImagePGM *image, u_short grey);
-
-void   ImagePGMSetPixel(ImagePGM *image, int x, int y, u_short val);
-u_short ImagePGMGetPixel(ImagePGM *image, int x, int y);
+pgm_t* read_pgm_image(char *filename);
+void   write_pgm_image(pgm_t *image, char *filename);
 
 #ifdef __cplusplus
 }

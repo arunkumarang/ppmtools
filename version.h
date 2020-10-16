@@ -1,2 +1,2 @@
 static const char version[] = "@(#)\
-ppmtools 1.0, Copyright 2018-20 by Arun";
+ppmtools 0.11, Copyright 2018-20 by Arun";

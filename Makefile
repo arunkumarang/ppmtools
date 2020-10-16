@@ -3,23 +3,23 @@
 SHELL           = /bin/sh
 CC              = gcc -Wall -Wstrict-prototypes -Wnested-externs -Wno-format
 CFLAGS          = -g -std=c99
-LDFLAGS         =  
+LDFLAGS         =
 DEFS            = -DGETTIMEOFDAY_TWO_ARGS -DHAVE_UNISTD_H
 LIBS            = -lm
-                
+
 DEPEND          = makedepend
-DEPEND_FLAGS    = 
-DEPEND_DEFINES  = 
+DEPEND_FLAGS    =
+DEPEND_DEFINES  =
 
 srcdir          = .
 INCLUDES        = -I$(srcdir)
 
-SRCS            = ppmtools.c ppm.c pgm.c
-OBJS            = ppmtools.o ppm.o pgm.o
+SRCS            = main.c ppm.c pgm.c
+OBJS            = main.o ppm.o pgm.o
 EXE             = ppmtools
 
 HDRS            = ppm.h pgm.h version.h
-MEN             = 
+MEN             =
 EXTRAS          = makefile README
 
 TARFILES        = $(EXTRAS) $(SRCS) $(HDRS) $(MEN)
@@ -50,7 +50,7 @@ tags:
 $(EXE): $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS)
 
-ppmtools.o: ppm.h pgm.h version.h
+main.o: ppm.h pgm.h version.h
 ppm.o: ppm.h
 pgm.o: pgm.h
 

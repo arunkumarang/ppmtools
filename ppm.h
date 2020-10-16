@@ -11,7 +11,7 @@ extern "C" {
 typedef unsigned char  u_char;
 typedef unsigned short u_short;
 
-typedef struct Image
+typedef struct ppm
 {
     int width;
     int height;
@@ -19,20 +19,14 @@ typedef struct Image
     u_short *ch1;
     u_short *ch2;
     u_short *ch3;
-} Image;
+} ppm_t;
 
-Image *ImageCreate(int width, int height, int maxval);
-void   ImageRelease(Image *image);
-Image *ImageRead(char *filename);
-void   ImageWrite(Image *image, char *filename);
+ppm_t* alloc_ppm_buffer(int width, int height, int maxval);
+void   free_ppm_buffer(ppm_t *image);
+void   clear_ppm_buffer(ppm_t *image, u_short red, u_short green, u_short blue);
 
-int    ImageWidth(Image *image);
-int    ImageHeight(Image *image);
-
-void   ImageClear(Image *image, u_short red, u_short green, u_short blue);
-
-void   ImageSetPixel(Image *image, int x, int y, int chan, u_short val);
-u_short ImageGetPixel(Image *image, int x, int y, int chan);
+ppm_t* read_ppm_image(char *filename);
+void   write_ppm_image(ppm_t *image, char *filename);
 
 #ifdef __cplusplus
 }
