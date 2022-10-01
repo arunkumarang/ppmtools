@@ -1,4 +1,5 @@
-Ppmtools is copyright 2018-2020 Arun.
+
+Ppmtools is utility to convert bit depth, colour space & zoom effect for PPM and PGM format.
 
 Run "ppmtools -h" command for option details.
 
