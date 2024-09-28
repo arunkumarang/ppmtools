@@ -1,6 +1,6 @@
 /*
- * ppm tools to convert the colorspace, bayer, bit-depth, scaling the image and
- * find the image difference.
+ * Ppmtools to convert the color space, bayer format, bit-depth, scale the 
+ * image, and find the difference between images.
  */
 
 #include <string.h>
@@ -10,6 +10,7 @@
 #include <stdarg.h>
 #include "ppm.h"
 #include "pgm.h"
+#include "version.h"
 
 /* ---------- macro definition ---------- */
 
@@ -28,16 +29,23 @@
 #define CYCbCr2G(Y, Cb, Cr) CLIP( Y - (( 22544 * Cb + 46793 * Cr ) >> 16) + 135)
 #define CYCbCr2B(Y, Cb, Cr) CLIP( Y + (116129 * Cb >> 16 ) - 226 )
 
-void usage(const char *av0)
+void usage(void)
 {
-    fprintf (stdout, "\n usage: %s option [args] ", av0);
-    fprintf (stdout, "\n   -d ref_file1 ref_file2 diff_file \
-                      \n   -s in_file out_file bit_depth(8 - 16)\
-                      \n   -z in_file out_file scale_factor(0.1x - 8.0x)\
-                      \n   -c in_file out_file convert_opt(0: yuv to rgb, 1: rgb to yuv)\
-                      \n   -b in_file out_file convert_opt(0: ppm to bayer, 1: bayer to ppm)\
+    fprintf (stdout, "usage: ppmtools option [arguments]");
+    fprintf (stdout, "\n  -d  file1.ppm  file2.ppm  diff_file.ppm                                \
+                      \n  -s  in_file.ppm  out_file.ppm  bit_depth (8 - 16)                              \
+                      \n  -z  in_file.ppm  out_file.ppm  scale_factor (0.1 - 8.0)                      \
+                      \n  -c  in_file.ppm  out_file.ppm  convert_opt (0: yuv to rgb, 1: rgb to yuv)      \
+                      \n  -b  in_file.ppm  out_file.ppm  convert_opt (0: ppm to bayer, 1: bayer to ppm)  \
+                      \n  -v  version number                                                             \
+                      \n  -h  help                                                                       \
                       \n");
     exit(1);
+}
+
+void version_num(void)
+{
+    fprintf (stdout, "%s\n", version);
 }
 
 static void die(const char *fmt, ...)
@@ -195,7 +203,7 @@ void diff_image(char *diff_name, char *src_name, char *dst_name)
     ppm_t *diff = 0;
 
     if (NULL == (diff = alloc_ppm_buffer(src->width, src->height, src->maxval))) {
-        die("error: %s", "memory allocation");
+        die("error: %s", "insufficient memory available");
     }
 
     if ((src->width != dst->width) || (src->height != dst->height)) {
@@ -233,7 +241,7 @@ void conv_bitdepth(char *src_name, char *dst_name, int bit_depth)
     int dst_maxval = (1 << bit_depth) - 1;
 
     if (NULL == (dst = alloc_ppm_buffer(src->width, src->height, src->maxval))) {
-        die("error: %s", "memory allocation");
+        die("error: %s", "insufficient memory available");
     }
 
     if ((src->width <= 0) || (src->height <= 0)) {
@@ -269,7 +277,7 @@ void ppm_to_bayer(char *src_name, char *dst_name)
     bayer_maxval = (1 << 16) - 1;
 
     if (NULL == (dst = alloc_pgm_buffer(src->width, src->height, src->maxval))) {
-        die("error: %s", "memory allocation");
+        die("error: %s", "insufficient memory available");
     }
 
     if ((src->width <= 0) || (src->height <= 0)) {
@@ -317,11 +325,11 @@ void bayer_to_ppm(char *src_name, char *dst_name)
     ppm_t *dst = NULL;
 
     if (NULL == (bilinear = alloc_ppm_buffer(src->width, src->height, src->maxval))) {
-        die("error: %s", "memory allocation");
+        die("error: %s", "insufficient memory available");
     }
 
     if (NULL == (dst = alloc_ppm_buffer(src->width, src->height, src->maxval))) {
-        die("error: %s", "memory allocation");
+        die("error: %s", "insufficient memory available");
     }
 
     if ((src->width <= 0) || (src->height <= 0)) {
@@ -373,7 +381,7 @@ void rgb_to_yuv(char *src_name, char *dst_name)
     ppm_t *dst = NULL;
 
     if (NULL == (dst = alloc_ppm_buffer(src->width, src->height, src->maxval))) {
-        die("error: %s", "memory allocation");
+        die("error: %s", "insufficient memory available");
     }
 
     if ((src->width <= 0) || (src->height <= 0)) {
@@ -406,7 +414,7 @@ void yuv_to_rgb(char *src_name, char *dst_name)
     ppm_t *dst = NULL;
 
     if (NULL == (dst = alloc_ppm_buffer(src->width, src->height, src->maxval))) {
-        die("error: %s", "memory allocation");
+        die("error: %s", "insufficient memory available");
     }
 
     if ((src->width <= 0) || (src->height <= 0)) {
@@ -443,7 +451,7 @@ void scale_image(char *src_name, char *dst_name, float scale) {
     dst_height = (long)((float)src->height * scale);
 
     if (NULL == (dst = alloc_ppm_buffer(dst_width, dst_height, src->maxval))) {
-        die("error: %s", "memory allocation");
+        die("error: %s", "insufficient memory available");
     }
 
     if ((dst->width <= 0) || (dst->height <= 0)) {
@@ -472,7 +480,7 @@ int main(int argc, char *argv[])
 {
     char *arg = NULL;
 
-    if (5 != argc) { usage(argv[0]); }
+    if (5 != argc && 2 != argc) { usage(); }
 
     while ((arg = argv[1]) != NULL) {
         if (*arg != '-')
@@ -488,8 +496,7 @@ int main(int argc, char *argv[])
                     int conv_opt = 0;
 
                     if (NULL == argv[2] || NULL == argv[3] || NULL == argv[4]) {
-                        fprintf(stderr, "usage: ppmdiff.exe -b infile outfile convertopt(0:ppm to bayer, 1:bayer to ppm)\n");
-                        die("error: %s ", "incorrect args");
+                        die("error: %s ", "incorrect argument");
                     }
 
                     src_name = argv[2];
@@ -497,8 +504,8 @@ int main(int argc, char *argv[])
                     conv_opt = atoi(argv[4]);
 
                     if (0 != conv_opt && 1 != conv_opt) {
-                        usage(argv[0]);
-                        die("error: %s ", "incorrect args");
+                        usage();
+                        die("error: %s ", "incorrect argument");
                     }
 
                     if (0 == conv_opt) {
@@ -506,7 +513,7 @@ int main(int argc, char *argv[])
                     } else if (1 == conv_opt) {
                         bayer_to_ppm(src_name, dst_name);       //Bayer to PPM
                     } else {
-                        die("error: %s ", "incorrect args");
+                        die("error: %s ", "incorrect argument");
                     }
                     continue;
                 }
@@ -516,8 +523,7 @@ int main(int argc, char *argv[])
                     int bit_depth = 8;
 
                     if (NULL == argv[2] || NULL == argv[3] || NULL == argv[4]) {
-                        fprintf(stderr, "usage: ppmdiff.exe -s infile outfile bit_depth(8-16)\n");
-                        die("error: %s ", "incorrect args");
+                        die("error: %s ", "incorrect argument");
                     }
 
                     src_name = argv[2];
@@ -525,8 +531,7 @@ int main(int argc, char *argv[])
                     bit_depth = atoi(argv[4]);
 
                     if (!(bit_depth >= 8 && bit_depth <= 16)) {
-                        usage(argv[0]);
-                        die("error: %s ", "incorrect args");
+                        die("error: %s ", "incorrect argument");
                     }
 
                     conv_bitdepth(src_name, dst_name, bit_depth);
@@ -537,8 +542,7 @@ int main(int argc, char *argv[])
                     char *src_name = NULL, *dst_name = NULL, *diff_name = NULL;
 
                     if (NULL == argv[2] || NULL == argv[3] || NULL == argv[4]) {
-                        fprintf(stderr, "usage: ppmdiff.exe -d reffile1 reffile2 difffile\n");
-                        die("error: %s ", "incorrect args");
+                        die("error: %s ", "incorrect argument");
                     }
 
                     src_name = argv[2];
@@ -554,8 +558,7 @@ int main(int argc, char *argv[])
                     int conv_opt = 0;
 
                     if (NULL == argv[2] || NULL == argv[3] || NULL == argv[4]) {
-                        fprintf(stderr, "usage: ppmdiff.exe -c infile outfile convertopt(0:YUV, 1:RGB)\n");
-                        die("error: %s ", "incorrect args");
+                        die("error: %s ", "incorrect argument");
                     }
 
                     src_name = argv[2];
@@ -563,8 +566,7 @@ int main(int argc, char *argv[])
                     conv_opt = atoi(argv[4]);
 
                     if (0 != conv_opt && 1 != conv_opt) {
-                        usage(argv[0]);
-                        die("error: %s ", "incorrect args");
+                        die("error: %s ", "incorrect argument");
                     }
 
                     if (0 == conv_opt) {
@@ -572,7 +574,7 @@ int main(int argc, char *argv[])
                     } else if (1 == conv_opt) {
                         yuv_to_rgb(src_name, dst_name);
                     } else {
-                        die("error: %s ", "incorrect args");
+                        die("error: %s ", "incorrect argument");
                     }
                     continue;
                 }
@@ -582,8 +584,7 @@ int main(int argc, char *argv[])
                     float scale_fact = 1.f;
 
                     if (NULL == argv[2] || NULL == argv[3] || NULL == argv[4]) {
-                        fprintf(stderr, "usage: ppmdiff.exe -z infile outfile zoomfactor(0.1-8.0x)\n");
-                        die("error: %s ", "incorrect args");
+                        die("error: %s ", "incorrect argument");
                     }
 
                     src_name = argv[2];
@@ -591,19 +592,24 @@ int main(int argc, char *argv[])
                     scale_fact = (float)atof(argv[4]);
 
                     if (!(scale_fact > 0.f && scale_fact <= 8.f)) {
-                        usage(argv[0]);
-                        die("error: %s ", "incorrect args");
+                        die("error: %s ", "incorrect argument");
                     }
 
                     scale_image(src_name, dst_name, scale_fact);
                     continue;
                 }
             case 'h':
-                usage(argv[0]);
+                {
+                usage();
                 continue;
-
+                }
+            case 'v':
+                {
+                version_num();
+                continue;
+                }
             default:
-                die("Unknown flag '%s'", arg);
+                die("unknown option '-%s'", arg);
             }
             break;
         }

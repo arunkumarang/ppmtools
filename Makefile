@@ -30,7 +30,7 @@ COMPRESS_EXT    = gz
 all: $(EXE)
 
 clean:
-	-rm -f *.o a.out $(EXE)
+	-rm -f *.o *.out $(EXE)
 
 distclean: clean
 	-rm -f *~ "#"*
