@@ -11,31 +11,25 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="cmdparse.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="ppm.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="pgm.c">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="ppmtools.c">
-      <Filter>src</Filter>
-    </ClCompile>
+    <ClInclude Include="..\pgm.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ppm.h">
+      <Filter>inc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\version.h">
+      <Filter>inc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="cmdparse.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="ppm.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="version.h">
-      <Filter>inc</Filter>
-    </ClInclude>
-    <ClInclude Include="pgm.h">
-      <Filter>inc</Filter>
-    </ClInclude>
+    <ClCompile Include="..\main.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pgm.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ppm.c">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
